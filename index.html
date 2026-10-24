@@ -1,0 +1,421 @@
+<title>CallAFriendPH</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: calm single-page site. Wide hero with a video-call mock, alternating light bands, pricing as a ladder, one application form. */
+:root{
+  --bg:#F2F7F6; --surface:#FFFFFF; --soft:#E3F0EE; --fg:#11303A; --muted:#4D6770; --line:#D3E2E0;
+  --brand:#0B7A83; --brand-strong:#095F67; --on-brand:#FFFFFF; --accent:#F0A23B; --on-accent:#3F2700;
+  --font-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --font-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B191E; --surface:#12262D; --soft:#0F2229; --fg:#E7F1F0; --muted:#9DB6B8; --line:#234049;
+  --brand:#3CC0C9; --brand-strong:#7ADBE1; --on-brand:#06262A; --accent:#F2B15C; --on-accent:#2E1C00; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0B191E; --surface:#12262D; --soft:#0F2229; --fg:#E7F1F0; --muted:#9DB6B8; --line:#234049;
+  --brand:#3CC0C9; --brand-strong:#7ADBE1; --on-brand:#06262A; --accent:#F2B15C; --on-accent:#2E1C00; color-scheme:dark;}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.6;margin:0}
+h1,h2,h3{font-family:var(--font-display);line-height:1.1;margin:0;text-wrap:balance;letter-spacing:-0.01em}
+h1{font-size:clamp(2.4rem,6vw,4.1rem);font-weight:700}
+h2{font-size:clamp(1.8rem,3.8vw,2.7rem);font-weight:700}
+h3{font-size:1.25rem;font-weight:700}
+p{margin:0}
+a{color:var(--brand-strong)}
+.wrap{max-width:1120px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.band{padding-block:clamp(56px,8vw,96px)}
+.band.soft{background:var(--soft)}
+.eyebrow{font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--brand-strong);margin-bottom:14px}
+.lead{font-size:1.15rem;color:var(--muted);max-width:60ch}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+/* header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{font-family:var(--font-display);font-weight:700;font-size:1.25rem;color:var(--fg);text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo i{width:30px;height:30px;border-radius:9px;background:var(--brand);display:grid;place-items:center}
+.logo svg{width:18px;height:18px;fill:var(--on-brand)}
+.logo b{color:var(--brand-strong)}
+.links{display:flex;gap:22px;align-items:center}
+.links a{color:var(--fg);text-decoration:none;font-weight:500;font-size:.95rem}
+.links a:hover{color:var(--brand-strong)}
+@media(max-width:760px){.links a.hide-s{display:none}}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;font:600 1rem var(--font-body);padding:13px 22px;border-radius:999px;text-decoration:none;transition:transform .15s,background .15s}
+.btn.primary{background:var(--brand);color:var(--on-brand)}
+.btn.primary:hover{background:var(--brand-strong);transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--fg);border:1.5px solid var(--line)}
+.btn.ghost:hover{border-color:var(--brand)}
+.btn.small{padding:10px 18px;font-size:.92rem}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,64px);align-items:center;padding-block:clamp(40px,6vw,80px)}
+.hero p.lead{margin-top:20px}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.facts{display:flex;gap:10px 22px;flex-wrap:wrap;margin-top:26px;font-size:.92rem;color:var(--muted)}
+.facts span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:8px}
+.hero>*{min-width:0}
+@media(max-width:860px){.hero{grid-template-columns:1fr}}
+
+.call{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:14px;box-shadow:0 18px 50px -24px rgba(9,60,70,.45)}
+.screen{position:relative;aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#0B7A83 0%,#12566a 55%,#1c3f5c 100%)}
+.screen svg.person{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:62%;max-width:100%}
+.screen .self{position:absolute;right:12px;top:12px;width:27%;aspect-ratio:3/4;border-radius:10px;background:linear-gradient(160deg,#F0A23B,#d9792b);border:2px solid rgba(255,255,255,.85);overflow:hidden}
+.screen .self svg{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:80%}
+.screen .tag{position:absolute;left:12px;top:12px;background:rgba(7,32,38,.62);color:#fff;font-size:.78rem;padding:5px 10px;border-radius:999px;backdrop-filter:blur(4px)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 6px 4px;font-size:.9rem;color:var(--muted)}
+.bar .timer{font-variant-numeric:tabular-nums;font-weight:600;color:var(--fg)}
+.bar .prog{flex:1;height:6px;border-radius:99px;background:var(--soft);overflow:hidden}
+.bar .prog i{display:block;height:100%;width:78%;background:var(--accent)}
+.note{font-size:.8rem;color:var(--muted);margin-top:8px;text-align:center}
+
+/* why */
+.why{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:start}
+.why>*{min-width:0}
+@media(max-width:860px){.why{grid-template-columns:1fr}}
+.why .copy{display:flex;flex-direction:column;gap:18px}
+.why .copy p{color:var(--muted)}
+.quote{border-left:4px solid var(--accent);padding:4px 0 4px 18px;font-family:var(--font-display);font-size:1.35rem;line-height:1.3;color:var(--fg)}
+.benefits{display:grid;gap:0;border-top:1px solid var(--line)}
+.benefit{display:grid;grid-template-columns:48px 1fr;gap:16px;padding:20px 0;border-bottom:1px solid var(--line)}
+.benefit .ic{width:44px;height:44px;border-radius:12px;background:var(--soft);display:grid;place-items:center}
+.band.soft .benefit .ic{background:var(--surface)}
+.benefit svg{width:22px;height:22px;stroke:var(--brand-strong);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.benefit p{color:var(--muted);margin-top:4px;font-size:.98rem}
+.disclaimer{font-size:.85rem;color:var(--muted);margin-top:18px}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:40px;counter-reset:s}
+.step{position:relative;padding-top:18px;border-top:2px solid var(--line)}
+.step::before{counter-increment:s;content:counter(s);position:absolute;top:-17px;left:0;width:32px;height:32px;border-radius:50%;background:var(--brand);color:var(--on-brand);display:grid;place-items:center;font-weight:600;font-size:.95rem}
+.step h3{margin-top:10px;font-size:1.1rem}
+.step p{color:var(--muted);margin-top:8px;font-size:.96rem}
+@media(max-width:900px){.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.steps{grid-template-columns:1fr}}
+
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
+.mode{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px}
+.mode.def{border:2px solid var(--brand)}
+.mode p{color:var(--muted);font-size:.96rem;margin-top:6px}
+.mtag{position:absolute;top:-12px;left:20px;background:var(--accent);color:var(--on-accent);font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 12px;border-radius:999px}
+@media(max-width:760px){.modes{grid-template-columns:1fr}}
+/* pricing */
+.sec-head{max-width:62ch;display:flex;flex-direction:column;gap:12px}
+.singles{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:36px}
+.single{display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px}
+.price{font-family:var(--font-display);font-weight:700;font-size:2.4rem;line-height:1;white-space:nowrap}
+.price small{font-size:.9rem;font-weight:500;color:var(--muted);font-family:var(--font-body)}
+.single .t{font-weight:600;font-size:1.1rem}
+.single .s{color:var(--muted);font-size:.92rem}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.plan{display:flex;flex-direction:column;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px}
+.plan.feat{border:2px solid var(--brand);position:relative}
+.plan .badge{position:absolute;top:-13px;left:22px;background:var(--accent);color:var(--on-accent);font-size:.75rem;font-weight:600;padding:4px 12px;border-radius:999px;letter-spacing:.04em}
+.plan ul{list-style:none;padding:0;margin:0;display:grid;gap:8px;color:var(--muted);font-size:.96rem;flex:1}
+.plan li{padding-left:24px;position:relative}
+.plan li::before{content:"";position:absolute;left:2px;top:.5em;width:10px;height:6px;border-left:2px solid var(--brand);border-bottom:2px solid var(--brand);transform:rotate(-45deg)}
+.plan .per{font-size:.9rem;color:var(--muted)}
+.price-note{margin-top:20px;font-size:.9rem;color:var(--muted);max-width:75ch}
+.status{min-height:1.5em;margin-top:14px;font-weight:500;color:var(--brand-strong)}
+@media(max-width:900px){.plans{grid-template-columns:1fr}.singles{grid-template-columns:1fr}}
+
+/* companions */
+.qualities{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 28px;margin-top:34px}
+.q{padding:18px 0;border-top:1px solid var(--line)}
+.q h3{font-size:1.1rem}
+.q p{color:var(--muted);font-size:.96rem;margin-top:6px}
+@media(max-width:900px){.qualities{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.qualities{grid-template-columns:1fr}}
+
+/* join */
+.join{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(28px,5vw,64px);align-items:start}
+.join>*{min-width:0}
+@media(max-width:900px){.join{grid-template-columns:1fr}}
+.join .copy{display:flex;flex-direction:column;gap:16px}
+.join .copy p{color:var(--muted)}
+.checks{list-style:none;padding:0;margin:6px 0 0;display:grid;gap:10px}
+.checks li{padding-left:28px;position:relative}
+.checks li::before{content:"";position:absolute;left:3px;top:.45em;width:12px;height:7px;border-left:2.5px solid var(--brand);border-bottom:2.5px solid var(--brand);transform:rotate(-45deg)}
+form{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,3vw,32px);display:grid;gap:16px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:560px){.row{grid-template-columns:1fr}}
+label{display:grid;gap:6px;font-weight:500;font-size:.93rem}
+input,select,textarea{font:inherit;color:var(--fg);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:11px 13px;width:100%;min-width:0}
+textarea{min-height:110px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 25%,transparent)}
+.check{display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:.92rem;color:var(--muted)}
+.check input{width:auto;margin-top:4px}
+fieldset{border:0;padding:0;margin:0;display:grid;gap:8px}
+legend{font-weight:500;font-size:.93rem;margin-bottom:6px;padding:0}
+.form-msg{font-size:.95rem;font-weight:500;color:var(--brand-strong);min-height:1.4em}
+
+/* safety + faq */
+.safety{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 40px;margin-top:30px}
+.safety div{display:grid;grid-template-columns:28px 1fr;gap:12px;padding:14px 0;border-top:1px solid var(--line)}
+.safety svg{width:24px;height:24px;stroke:var(--brand-strong);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;margin-top:2px}
+.safety p{color:var(--muted);font-size:.96rem}
+.safety strong{display:block;color:var(--fg);font-size:1.02rem;margin-bottom:2px}
+@media(max-width:760px){.safety{grid-template-columns:1fr}}
+details{border-top:1px solid var(--line);padding:18px 0}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;font-weight:600;font-size:1.05rem;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:1.4rem;line-height:1;color:var(--brand-strong)}
+details[open] summary::after{content:"\2212"}
+details p{color:var(--muted);margin-top:10px;max-width:70ch}
+.faq{max-width:820px;margin-top:30px}
+
+footer{border-top:1px solid var(--line);padding-block:36px;color:var(--muted);font-size:.9rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between}
+footer p{max-width:62ch}
+
+footer .wrap.foot{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:28px;justify-content:stretch}
+.foot h4{font-family:var(--font-display);font-size:.95rem;color:var(--fg);margin:0 0 10px}
+.foot a{display:block;color:var(--muted);text-decoration:none;padding:3px 0}
+.foot a:hover{color:var(--brand-strong)}
+.foot .copy{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px}
+@media(max-width:700px){footer .wrap.foot{grid-template-columns:1fr 1fr}.foot .fcol:first-child{grid-column:1/-1}}
+@media(max-width:480px){.nav .btn.small{padding:8px 12px;font-size:.82rem;white-space:nowrap}.logo span{font-size:.95rem}.nav{gap:8px}.nav .links a:not(.btn){display:none}}</style>
+
+<header class="top">
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="CallAFriendPH home"><i><svg viewBox="0 0 24 24"><path d="M3 7a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3v2.6l4.4-2.9A1 1 0 0 1 22 7.5v9a1 1 0 0 1-1.6.8L16 14.4V17a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V7z"/></svg></i><span>CallAFriend<b>PH</b></span></a>
+    <nav class="links" aria-label="Main">
+      <a class="hide-s" href="index.html">Home</a><a class="hide-s" href="companions.html">Companions</a>
+      <a class="hide-s" href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a class="btn primary small" href="become-a-companion.html">Become a companion</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<section class="wrap hero">
+  <div>
+    <div class="eyebrow">Friendly video calls with warm, kind people</div>
+    <h1>Someone to talk to, face to face, whenever you need it.</h1>
+    <p class="lead">Book a 30 or 60 minute session with a kind, vetted companion from the Philippines. Meet face to face on video, or choose audio or text chat if that feels more comfortable. Always friendly, always platonic.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="#pricing">See prices and book</a>
+      <a class="btn ghost" href="companions.html">Meet the companions</a>
+    </div>
+    <div class="facts"><span>Video by default</span><span>Audio or text chat too</span><span>Verified companions</span><span>18+ on both sides</span></div>
+  </div>
+  <div>
+    <div class="call" role="img" aria-label="Illustration of a video call between a customer and a companion">
+      <div class="screen">
+        <span class="tag">Sample call</span>
+        <svg class="person" viewBox="0 0 200 170" aria-hidden="true"><circle cx="100" cy="58" r="34" fill="#F6D2B0"/><path d="M62 52c0-26 16-40 38-40s38 14 38 40c-8-14-20-20-38-20s-30 6-38 20z" fill="#1d2a33"/><path d="M20 170c0-40 32-64 80-64s80 24 80 64z" fill="#F0A23B"/></svg>
+        <div class="self"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="38" r="17" fill="#F6D2B0"/><path d="M10 100c0-26 16-38 40-38s40 12 40 38z" fill="#0B7A83"/></svg></div>
+      </div>
+      <div class="bar"><span class="timer">23:40</span><span class="prog"><i></i></span><span>30 min</span></div>
+    </div>
+    <p class="note">Illustration only. Every session is live with a real, verified companion.</p>
+  </div>
+</section>
+
+<section class="band soft" id="why">
+  <div class="wrap why">
+    <div class="copy">
+      <div class="eyebrow">Why it matters</div>
+      <h2>Loneliness is a quiet crisis, and talking helps.</h2>
+      <p>Many adults go days without a real conversation. Busy schedules, moving to a new city, working from home, or losing touch with friends can leave people feeling isolated. In 2023 the U.S. Surgeon General warned of a loneliness and isolation epidemic and called social connection a public health priority.</p>
+      <p>A regular, friendly face on the screen can change how a day feels. You do not need to be in crisis to want company. Sometimes you just want someone to listen, laugh with you and ask how your week went.</p>
+      <div class="quote">A good conversation is one of the simplest ways to feel less alone.</div>
+    </div>
+    <div>
+      <div class="benefits">
+        <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2.5 4 2.5S16 14 16 14M9 9.5h.01M15 9.5h.01"/></svg></div><div><h3>A lighter mood</h3><p>Warm, face-to-face conversation can ease stress and help a heavy day feel more manageable.</p></div></div>
+        <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.6-9 9-9 9z"/></svg></div><div><h3>Feeling heard</h3><p>Having someone give you their full attention builds a sense of belonging and self-worth.</p></div></div>
+        <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 12h4l3-7 4 14 3-7h2"/></svg></div><div><h3>Healthier routines</h3><p>A regular call gives the week a rhythm, and many people find it easier to stay active and engaged.</p></div></div>
+        <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 1 18 0 9 9 0 0 1-18 0zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></div><div><h3>Confidence and culture</h3><p>Chat in relaxed English, share stories and learn about life in the Philippines.</p></div></div>
+      </div>
+      <p class="disclaimer">CallAFriendPH offers friendly company. It is not therapy, counselling or medical care. If you are struggling, please reach out to a qualified professional or a local crisis line.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">How it works</div>
+      <h2>From booking to hello in four steps.</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><h3>Pick a companion</h3><p>Browse friendly profiles with interests, languages and open times.</p></div>
+      <div class="step"><h3>Choose your time</h3><p>Book a 30 or 60 minute session, or a plan for regular calls.</p></div>
+      <div class="step"><h3>Join your session</h3><p>Open your link in the browser and start on video. Switch to audio or text any time. No downloads, no phone numbers shared.</p></div>
+      <div class="step"><h3>Rate and repeat</h3><p>Leave feedback and rebook the people you click with.</p></div>
+    </div>
+    <div class="modes" role="list" aria-label="Ways to talk">
+      <div class="mode def" role="listitem"><span class="mtag">Default</span><h3>Video</h3><p>Face to face, like meeting a friend for coffee. Most people start here.</p></div>
+      <div class="mode" role="listitem"><h3>Audio</h3><p>Just your voices, with the camera off. Easy when you are on the move or prefer privacy.</p></div>
+      <div class="mode" role="listitem"><h3>Text chat</h3><p>Write at your own pace. A good fit if you feel shy or are in a noisy place.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band soft" id="pricing">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Pricing</div>
+      <h2>Simple prices. Pick the way you like to talk.</h2>
+      <p class="lead">Sessions are on video by default. You can choose audio or text chat instead, at the same price. Try a single session, or save with a plan for regular company.</p>
+    </div>
+
+    <div class="singles">
+      <div class="single"><div><div class="t">30 minute session</div><div class="s">A quick catch-up</div></div><div style="display:flex;align-items:center;gap:16px"><div class="price">$9</div><button class="btn primary small" data-plan="30 minute call ($9)">Book</button></div></div>
+      <div class="single"><div><div class="t">60 minute session</div><div class="s">Time for a real conversation</div></div><div style="display:flex;align-items:center;gap:16px"><div class="price">$16</div><button class="btn primary small" data-plan="60 minute call ($16)">Book</button></div></div>
+    </div>
+
+    <div class="plans">
+      <div class="plan">
+        <h3>Weekly</h3>
+        <div class="price">$29 <small>/ week</small></div>
+        <ul><li>4 sessions of 30 minutes</li><li>Use them within 7 days</li><li>Book any companion each time, or stay with your favorite</li></ul>
+        <div class="per">About $7.25 per call</div>
+        <button class="btn ghost" data-plan="Weekly plan ($29)">Choose Weekly</button>
+      </div>
+      <div class="plan feat">
+        <span class="badge">MOST POPULAR</span>
+        <h3>Monthly</h3>
+        <div class="price">$99 <small>/ month</small></div>
+        <ul><li>12 sessions of 30 minutes</li><li>Use them within 30 days</li><li>Easy cancellation any time</li></ul>
+        <div class="per">About $8.25 per call</div>
+        <button class="btn primary" data-plan="Monthly plan ($99)">Choose Monthly</button>
+      </div>
+      <div class="plan">
+        <h3>Monthly Plus</h3>
+        <div class="price">$149 <small>/ month</small></div>
+        <ul><li>10 sessions of 30 minutes</li><li>5 sessions of 60 minutes</li><li>Use them within 30 days</li></ul>
+        <div class="per">Best for longer conversations</div>
+        <button class="btn ghost" data-plan="Monthly Plus plan ($149)">Choose Monthly Plus</button>
+      </div>
+    </div>
+    <p class="status" id="plan-status" role="status" aria-live="polite"></p>
+    <p class="price-note">Prices are in US dollars. Plans renew automatically and can be cancelled at any time. A maximum of 2 sessions can be booked per day so every session stays relaxed and enjoyable.</p>
+  </div>
+</section>
+
+<section class="band" id="companions">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Our companions</div>
+      <h2>Kind, genuine people you will look forward to calling.</h2>
+      <p class="lead">Every companion is an adult in the Philippines who is ID-verified, interviewed and trained before taking a single call.</p>
+    </div>
+    <div class="qualities">
+      <div class="q"><h3>Kind</h3><p>Patient, warm and welcoming to every kind of person.</p></div>
+      <div class="q"><h3>Sympathetic</h3><p>A good listener who responds with care, not judgement.</p></div>
+      <div class="q"><h3>Professional</h3><p>On time, respectful and clear about boundaries.</p></div>
+      <div class="q"><h3>Good communicator</h3><p>Clear, friendly English and a natural way of keeping a conversation going.</p></div>
+      <div class="q"><h3>Positive</h3><p>Encouraging, easy to laugh with and calm under pressure.</p></div>
+      <div class="q"><h3>Trustworthy</h3><p>Honest, discreet and committed to the platform's safety rules.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band soft" id="join">
+  <div class="wrap join">
+    <div class="copy">
+      <div class="eyebrow">Become a companion</div>
+      <h2>Bring your warmth to someone's day.</h2>
+      <p>We are welcoming new companions in the Philippines. You will work from home, set your own availability and help people feel seen and valued. Training is provided.</p>
+      <ul class="checks">
+        <li>Aged 18 or older</li>
+        <li>Friendly, clear spoken English</li>
+        <li>A quiet space, a laptop or phone with a camera and microphone, and reliable internet</li>
+        <li>Kindness, patience and respect for boundaries</li>
+        <li>Willing to verify your ID and complete a short video interview</li>
+      </ul>
+      <p>This role is strictly platonic friendly conversation. Applications with any other expectation are declined.</p>
+      <p><a href="become-a-companion.html">Read the full companion guide</a></p>
+    </div>
+    <form id="apply" novalidate>
+      <div class="row">
+        <label for="name">Full name<input id="name" name="name" type="text" autocomplete="name" required></label>
+        <label for="email">Email<input id="email" name="email" type="email" autocomplete="email" required></label>
+      </div>
+      <div class="row">
+        <label for="city">City or province<input id="city" name="city" type="text" required></label>
+        <label for="age">Age<input id="age" name="age" type="number" min="18" max="80" required></label>
+      </div>
+      <div class="row">
+        <label for="english">Spoken English
+          <select id="english" name="english" required><option value="">Choose one</option><option>Conversational</option><option>Fluent</option><option>Native-level</option></select>
+        </label>
+        <label for="hours">Hours you could offer per day
+          <select id="hours" name="hours" required><option value="">Choose one</option><option>1 to 2 hours</option><option>3 to 4 hours</option><option>5 or more hours</option></select>
+        </label>
+      </div>
+      <fieldset>
+        <legend>When are you usually free?</legend>
+        <label class="check" for="t1"><input id="t1" type="checkbox" name="time" value="morning">Mornings</label>
+        <label class="check" for="t2"><input id="t2" type="checkbox" name="time" value="afternoon">Afternoons</label>
+        <label class="check" for="t3"><input id="t3" type="checkbox" name="time" value="evening">Evenings and nights (good for US customers)</label>
+      </fieldset>
+      <label for="why">Why would you be a good companion?<textarea id="why" name="why" required placeholder="Tell us about your personality, interests and what you enjoy about talking with people."></textarea></label>
+      <label class="check" for="agree"><input id="agree" type="checkbox" name="agree" required>I am 18 or older and I understand this is a strictly platonic friendly-conversation role, by video, audio or text chat.</label>
+      <button class="btn primary" type="submit">Submit application</button>
+      <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<section class="band" id="safety">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Safety and respect</div>
+      <h2>Friendly, private and safe for everyone.</h2>
+    </div>
+    <div class="safety">
+      <div><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg><p><strong>Verified adults only</strong>Companions are ID-checked and interviewed. Customers must be 18 or older.</p></div>
+      <div><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg><p><strong>Sessions inside the platform</strong>No in-person meetings and no sharing of phone numbers or social accounts.</p></div>
+      <div><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><p><strong>Platonic and respectful</strong>No romantic or sexual content, and no requests for gifts or money.</p></div>
+      <div><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg><p><strong>Anyone can end a session</strong>Anyone can leave a conversation that feels uncomfortable, and we act on every report.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band soft" id="faq">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">Questions</div><h2>Good to know.</h2></div>
+    <div class="faq">
+      <details><summary>Is it video, audio or text?</summary><p>Sessions start on video by default, so you can see and talk with your companion face to face. If you prefer, choose audio only or text chat when you book, or switch during the session. The price is the same.</p></details>
+      <details><summary>Is this a dating service?</summary><p>No. CallAFriendPH is for friendly, platonic conversation only. Romantic or sexual requests lead to removal from the platform.</p></details>
+      <details><summary>What can we talk about?</summary><p>Almost anything friendly: your day, hobbies, travel, food, music, practicing English or just relaxing. Companions are not therapists, so they will not give medical or legal advice.</p></details>
+      <details><summary>How do plans work?</summary><p>Weekly sessions must be used within 7 days and monthly sessions within 30 days. Plans renew automatically and you can cancel at any time.</p></details>
+      <details><summary>Can I choose the same companion every time?</summary><p>Yes. Many people book the same companion regularly, and you can try different ones until you find a good fit.</p></details>
+      <details><summary>What do I need to join a session?</summary><p>A phone or laptop and a stable internet connection. For video you also need a camera and microphone. Text chat needs neither. Everything runs in your browser.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap foot"><div class="fcol"><strong>CallAFriendPH</strong><p>Friendly companionship by video, audio or text chat with kind, verified people from the Philippines. Not a substitute for therapy or medical care. Customers and companions must be 18 or older.</p></div><div class="fcol"><h4>Explore</h4><a href="index.html">Home</a><a href="companions.html">Browse companions</a><a href="become-a-companion.html">Become a companion</a><a href="index.html#pricing">Pricing</a><a href="contact.html">Contact</a></div><div class="fcol"><h4>Policies</h4><a href="terms.html">Terms of Service</a><a href="privacy.html">Privacy Policy</a><a href="refunds.html">Refunds and Cancellation</a><a href="safety.html">Safety and Community</a></div><p class="copy">&copy; <span id="yr">2026</span> CallAFriendPH. All rights reserved.</p></div></footer>
+
+<script>
+(function(){
+  try{document.getElementById('yr').textContent=new Date().getFullYear()}catch(e){}
+  var status=document.getElementById('plan-status');
+  document.querySelectorAll('[data-plan]').forEach(function(b){
+    b.addEventListener('click',function(){
+      status.textContent='You picked the '+b.getAttribute('data-plan')+'. Online checkout opens when the site launches.';
+    });
+  });
+  var form=document.getElementById('apply'),msg=document.getElementById('form-msg');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var age=parseInt(document.getElementById('age').value,10);
+    if(!form.checkValidity()){form.reportValidity();msg.textContent='Please complete the highlighted fields.';return}
+    if(isNaN(age)||age<18){msg.textContent='Companions must be 18 or older.';return}
+    msg.textContent='Thank you. Preview only: this form is not connected yet, so nothing was sent.';
+  });
+})();
+</script>
